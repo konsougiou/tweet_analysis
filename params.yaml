@@ -1,0 +1,15 @@
+preprocess:
+  text_column: text
+  clean_lower: true
+
+train_sentiment:
+  test_size: 0.2
+  random_state: 42
+  max_features: 5000
+  C: 1.0
+
+train_intent:
+  test_size: 0.2
+  random_state: 42
+  ngram_range: [1, 2]
+  alpha: 1.0

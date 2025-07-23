@@ -1,0 +1,5 @@
+outs:
+- md5: a6d15b99f64b21086e58a59b354a9c52
+  size: 238814030
+  hash: md5
+  path: sentiment_tweets.csv

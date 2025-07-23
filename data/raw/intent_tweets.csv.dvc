@@ -1,0 +1,5 @@
+outs:
+- md5: e924564b500617fcc2094a1135b792c2
+  size: 1861010
+  hash: md5
+  path: intent_tweets.csv

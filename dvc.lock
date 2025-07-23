@@ -1,0 +1,38 @@
+schema: '2.0'
+stages:
+  preprocess_sentiment:
+    cmd: python pipeline/preprocess_sentiment.py --input-csv 
+      data/raw/sentiment_tweets.csv --output-csv 
+      data/processed/sentiment_clean.csv --clean-lower
+    deps:
+    - path: data/raw/sentiment_tweets.csv
+      hash: md5
+      md5: a6d15b99f64b21086e58a59b354a9c52
+      size: 238814030
+    - path: pipeline/preprocess_sentiment.py
+      hash: md5
+      md5: 416445fa4ad4df78d5ff2abc939044bf
+      size: 868
+    outs:
+    - path: data/processed/sentiment_clean.csv
+      hash: md5
+      md5: b5e8c44dd3e4184b8e1c138879b1fb62
+      size: 122159432
+  preprocess_intent:
+    cmd: python pipeline/preprocess_intent.py --input-csv 
+      data/raw/intent_tweets.csv --output-csv data/processed/intent_clean.csv 
+      --clean-lower
+    deps:
+    - path: data/raw/intent_tweets.csv
+      hash: md5
+      md5: e924564b500617fcc2094a1135b792c2
+      size: 1861010
+    - path: pipeline/preprocess_intent.py
+      hash: md5
+      md5: 8acc3c9b58dc7d54d460ba89db1ea146
+      size: 785
+    outs:
+    - path: data/processed/intent_clean.csv
+      hash: md5
+      md5: 757bc27737582111b64a9aceebfedf55
+      size: 1676890

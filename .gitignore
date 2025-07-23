@@ -1,0 +1,6 @@
+.env
+.venv
+.vscode
+dvc_storage/
+data/processed/
+*.DS_Store

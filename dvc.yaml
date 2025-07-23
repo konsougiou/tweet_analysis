@@ -1,0 +1,51 @@
+stages:
+  preprocess_sentiment:
+    cmd: python pipeline/preprocess_sentiment.py --input-csv data/raw/sentiment_tweets.csv --output-csv data/processed/sentiment_clean.csv --clean-lower
+    deps:
+      - pipeline/preprocess_sentiment.py
+      - data/raw/sentiment_tweets.csv
+    outs:
+      - data/processed/sentiment_clean.csv
+
+  preprocess_intent:
+    cmd: python pipeline/preprocess_intent.py --input-csv data/raw/intent_tweets.csv --output-csv data/processed/intent_clean.csv --clean-lower
+    deps:
+      - pipeline/preprocess_intent.py
+      - data/raw/intent_tweets.csv
+    outs:
+      - data/processed/intent_clean.csv
+
+  # train_sentiment:
+  #   cmd: python pipeline/train_sentiment.py \
+  #          --data data/processed/sentiment_clean.csv \
+  #          --model-dir models/sentiment
+  #   deps:
+  #     - pipeline/train_sentiment.py
+  #     - data/processed/sentiment_clean.csv
+  #     - params.yaml
+  #   outs:
+  #     - models/sentiment
+
+  # train_intent:
+  #   cmd: python pipeline/train_intent.py \
+  #          --data data/processed/intent_clean.csv \
+  #          --model-dir models/intent
+  #   deps:
+  #     - pipeline/train_intent.py
+  #     - data/processed/intent_clean.csv
+  #     - params.yaml
+  #   outs:
+  #     - models/intent
+
+  # evaluate:
+  #   cmd: python pipeline/evaluate.py \
+  #          --sentiment-model models/sentiment \
+  #          --intent-model models/intent \
+  #          --sentiment-data data/processed/sentiment_clean.csv \
+  #          --intent-data    data/processed/intent_clean.csv
+  #   deps:
+  #     - pipeline/evaluate.py
+  #     - models/sentiment
+  #     - models/intent
+  #     - data/processed/sentiment_clean.csv
+  #     - data/processed/intent_clean.csv
