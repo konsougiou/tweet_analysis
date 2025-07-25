@@ -1,3 +1,7 @@
+import os
+import io
+import tempfile
+
 import argparse
 import pandas as pd
 import mlflow
@@ -7,7 +11,6 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import f1_score
 from mlflow.models.signature import infer_signature
 import joblib
-import os
 
 def main(data_csv, model_dir, params):
     df = pd.read_csv(data_csv)
@@ -23,6 +26,7 @@ def main(data_csv, model_dir, params):
     X_train_cv = vec.fit_transform(X_train)
     X_val_cv   = vec.transform(X_val)
 
+    os.makedirs(model_dir, exist_ok=True)
     mlflow.set_experiment("tweet_intent")
     with mlflow.start_run():
         mlflow.log_params(params)
@@ -43,8 +47,14 @@ def main(data_csv, model_dir, params):
             signature=signature,
             input_example=sample_input
             )
-        os.makedirs(model_dir, exist_ok=True)
-        joblib.dump(vec, f"{model_dir}/vectorizer.joblib")
+
+        with tempfile.NamedTemporaryFile(suffix=".joblib", delete=False) as tmp:
+            joblib.dump(vec, tmp.name)
+            tmp_path = tmp.name
+
+        mlflow.log_artifact(tmp_path, artifact_path="model")
+
+        os.remove(tmp_path)
 
     print(f"Intent model saved to {model_dir}| val_f1={f1:.4f}")
 
@@ -55,5 +65,5 @@ if __name__ == "__main__":
     args = p.parse_args()
 
     import yaml
-    params = yaml.safe_load(open("params.yaml"))['train_intent']
+    params = yaml.safe_load(open("params/intent.yaml"))
     main(args.data, args.model_dir, params)
