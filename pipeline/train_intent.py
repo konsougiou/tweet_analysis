@@ -5,7 +5,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import f1_score
+from mlflow.models.signature import infer_signature
 import joblib
+import os
 
 def main(data_csv, model_dir, params):
     df = pd.read_csv(data_csv)
@@ -31,10 +33,20 @@ def main(data_csv, model_dir, params):
         f1 = f1_score(y_val, preds, average="macro")
         mlflow.log_metric("val_f1_macro", f1)
 
-        mlflow.sklearn.log_model(clf, "model")
+        sample_input = X_val_cv[:4].toarray()
+        sample_output = clf.predict(sample_input)
+        signature = infer_signature(sample_input, sample_output)
+
+        mlflow.sklearn.log_model(
+            clf, 
+            "model", 
+            signature=signature,
+            input_example=sample_input
+            )
+        os.makedirs(model_dir, exist_ok=True)
         joblib.dump(vec, f"{model_dir}/vectorizer.joblib")
 
-    print(f"Intent model saved to {model_dir}; val_f1={f1:.4f}")
+    print(f"Intent model saved to {model_dir}| val_f1={f1:.4f}")
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
