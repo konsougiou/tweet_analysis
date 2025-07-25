@@ -36,3 +36,47 @@ stages:
       hash: md5
       md5: 757bc27737582111b64a9aceebfedf55
       size: 1676890
+  train_sentiment:
+    cmd: python pipeline/train_sentiment.py --data 
+      data/processed/sentiment_clean.csv --model-dir models/sentiment
+    deps:
+    - path: data/processed/sentiment_clean.csv
+      hash: md5
+      md5: b5e8c44dd3e4184b8e1c138879b1fb62
+      size: 122159432
+    - path: params.yaml
+      hash: md5
+      md5: f7d9b4ab7b8cbd2ae67ec104d11c5e91
+      size: 221
+    - path: pipeline/train_sentiment.py
+      hash: md5
+      md5: b3e8a22fc06474d5e6247246d3264349
+      size: 1506
+    outs:
+    - path: models/sentiment
+      hash: md5
+      md5: fd14817575cbb6b43b945d2ab5871979.dir
+      size: 178809
+      nfiles: 1
+  train_intent:
+    cmd: python pipeline/train_intent.py --data data/processed/intent_clean.csv 
+      --model-dir models/intent
+    deps:
+    - path: data/processed/intent_clean.csv
+      hash: md5
+      md5: 757bc27737582111b64a9aceebfedf55
+      size: 1676890
+    - path: params.yaml
+      hash: md5
+      md5: f7d9b4ab7b8cbd2ae67ec104d11c5e91
+      size: 221
+    - path: pipeline/train_intent.py
+      hash: md5
+      md5: 83db977159097cd49d4dd8316b096357
+      size: 1545
+    outs:
+    - path: models/intent
+      hash: md5
+      md5: 7466fbc4ac21a05dc89b3769d91a73f4.dir
+      size: 1879430
+      nfiles: 1

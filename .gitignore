@@ -4,3 +4,5 @@
 dvc_storage/
 data/processed/
 *.DS_Store
+models/
+mlruns/
